@@ -30,7 +30,7 @@
           <item>
            <widget class="QPushButton" name="btnAddTask">
             <property name="text">
-             <string>➕ Добавить задачу</string>
+             <string>Добавить задачу</string>
             </property>
            </widget>
           </item>
@@ -99,7 +99,7 @@
           <item>
            <widget class="QPushButton" name="btnAddEvent">
             <property name="text">
-             <string>➕ Новое событие</string>
+             <string>Новое событие</string>
             </property>
            </widget>
           </item>
@@ -142,14 +142,14 @@
             <item>
              <widget class="QPushButton" name="btnSaveNote">
               <property name="text">
-               <string>💾 Сохранить</string>
+               <string>Сохранить</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="btnDeleteNote">
               <property name="text">
-               <string>🗑️ Удалить</string>
+               <string>Удалить</string>
               </property>
              </widget>
             </item>

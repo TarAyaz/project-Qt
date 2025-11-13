@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QFileDialog,
 )
 from PyQt6.QtCore import QDate, Qt
-from PyQt6.QtGui import QColor, QTextCharFormat, QPalette
+from PyQt6.QtGui import QColor, QTextCharFormat, QPalette, QIcon
 from .utils import load_ui
 from .dialogs import TaskDialog, EventDialog
 from database.db_manager import DatabaseManager
@@ -18,6 +18,11 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = load_ui("main_window.ui")
         self.setCentralWidget(self.ui)
+
+        self.ui.btnAddTask.setIcon(QIcon("icons/add.png"))
+        self.ui.btnAddEvent.setIcon(QIcon("icons/add.png"))
+        self.ui.btnSaveNote.setIcon(QIcon("icons/save.png"))
+        self.ui.btnDeleteNote.setIcon(QIcon("icons/delete.png"))
 
         self.ui.actionToggleTheme.triggered.connect(self.toggle_theme)
         self.ui.actionExportTasks.triggered.connect(lambda: self.export_data("tasks"))
