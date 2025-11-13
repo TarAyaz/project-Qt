@@ -36,7 +36,8 @@ class DatabaseManager:
                     date TEXT NOT NULL,
                     time TEXT,
                     color TEXT,
-                    is_recurring INTEGER
+                    is_recurring INTEGER,
+                    event_type TEXT DEFAULT 'default_event'
                 )
             """)
             conn.execute("""
@@ -94,8 +95,8 @@ class DatabaseManager:
             for e in events:
                 conn.execute(
                     """
-                    INSERT INTO events (title, description, date, time, color, is_recurring)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO events (title, description, date, time, color, is_recurring, event_type)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                     (
                         e["title"],
@@ -104,13 +105,14 @@ class DatabaseManager:
                         e["time"],
                         e["color"],
                         int(e["is_recurring"]),
+                        e.get("type", "default_event"),
                     ),
                 )
 
     def load_events(self):
         with self.get_connection() as conn:
             rows = conn.execute("""
-                SELECT title, description, date, time, color, is_recurring
+                SELECT title, description, date, time, color, is_recurring, event_type
                 FROM events
             """).fetchall()
             return [
@@ -121,6 +123,7 @@ class DatabaseManager:
                     "time": r[3],
                     "color": r[4],
                     "is_recurring": bool(r[5]),
+                    "type": r[6],
                 }
                 for r in rows
             ]
