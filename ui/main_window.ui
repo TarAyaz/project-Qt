@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>My Personal Organizer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabTasks">
+       <attribute name="title">
+        <string>Задачи</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_1">
+          <item>
+           <widget class="QPushButton" name="btnAddTask">
+            <property name="text">
+             <string>➕ Добавить задачу</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboTaskFilter">
+            <item>
+             <property name="text">
+              <string>Все</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Активные</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Выполненные</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableTasks">
+          <column>
+           <property name="text">
+            <string>Выполнено</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Заголовок</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Приоритет</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Дедлайн</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Категория</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabCalendar">
+       <attribute name="title">
+        <string>Календарь</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QCalendarWidget" name="calendarWidget"/>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QPushButton" name="btnAddEvent">
+            <property name="text">
+             <string>➕ Новое событие</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelEventsToday">
+            <property name="text">
+             <string>События сегодня:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listEventsToday"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabNotes">
+       <attribute name="title">
+        <string>Заметки</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QListWidget" name="listNotes"/>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="editNoteTitle">
+            <property name="placeholderText">
+             <string>Заголовок заметки</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="textNoteContent"/>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QPushButton" name="btnSaveNote">
+              <property name="text">
+               <string>💾 Сохранить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnDeleteNote">
+              <property name="text">
+               <string>🗑️ Удалить</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionExportTasks"/>
+    <addaction name="actionExportEvents"/>
+    <addaction name="actionExportNotes"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <addaction name="actionToggleTheme"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExportTasks">
+   <property name="text">
+    <string>Экспорт задач...</string>
+   </property>
+  </action>
+  <action name="actionExportEvents">
+   <property name="text">
+    <string>Экспорт событий...</string>
+   </property>
+  </action>
+  <action name="actionExportNotes">
+   <property name="text">
+    <string>Экспорт заметок...</string>
+   </property>
+  </action>
+  <action name="actionToggleTheme">
+   <property name="text">
+    <string>Сменить тему</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
