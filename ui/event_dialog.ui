@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>320</height>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,6 +80,56 @@
        <property name="text">
         <string>Выбрать цвет</string>
        </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout4">
+     <item>
+      <widget class="QLabel" name="labelEventType">
+       <property name="text">
+        <string>Тип события:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboEventType">
+       <item>
+        <property name="text">
+         <string>Обычное</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>День рождения</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Звонок</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Уборка</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Здоровье</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Встреча</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Работа</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

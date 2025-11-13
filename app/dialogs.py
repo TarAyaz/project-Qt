@@ -72,6 +72,16 @@ class EventDialog(QDialog):
         )
 
     def get_data(self):
+        type_map = {
+            "Обычное": "default_event",
+            "День рождения": "birthday",
+            "Звонок": "call",
+            "Уборка": "cleaning",
+            "Здоровье": "health",
+            "Встреча": "meeting",
+            "Работа": "work",
+        }
+        event_type = type_map.get(self.ui.comboEventType.currentText(), "default_event")
         return {
             "title": self.ui.editTitle.text().strip(),
             "description": self.ui.editDescription.toPlainText().strip(),
@@ -79,6 +89,7 @@ class EventDialog(QDialog):
             "time": self.ui.timeEvent.time().toString("HH:mm"),
             "color": self.selected_color,
             "is_recurring": self.ui.checkRecurring.isChecked(),
+            "type": event_type,
         }
 
     def set_data(self, data):
@@ -91,3 +102,17 @@ class EventDialog(QDialog):
         self.selected_color = data.get("color", "#4A90E2")
         self.update_color_button()
         self.ui.checkRecurring.setChecked(data.get("is_recurring", False))
+
+        event_type = data.get("type", "default_event")
+        type_reverse = {
+            "default_event": "Обычное",
+            "birthday": "День рождения",
+            "call": "Звонок",
+            "cleaning": "Уборка",
+            "health": "Здоровье",
+            "meeting": "Встреча",
+            "work": "Работа",
+        }
+        idx = self.ui.comboEventType.findText(type_reverse.get(event_type, "Обычное"))
+        if idx != -1:
+            self.ui.comboEventType.setCurrentIndex(idx)

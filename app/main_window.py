@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QFileDialog,
 )
 from PyQt6.QtCore import QDate, Qt
-from PyQt6.QtGui import QColor, QTextCharFormat, QPalette, QIcon
+from PyQt6.QtGui import QColor, QTextCharFormat, QPalette, QIcon, QPixmap
 from .utils import load_ui
 from .dialogs import TaskDialog, EventDialog
 from database.db_manager import DatabaseManager
@@ -132,11 +132,17 @@ class MainWindow(QMainWindow):
             fmt = self.ui.calendarWidget.dateTextFormat(date)
             fmt.setBackground(QColor(ev["color"]))
             self.ui.calendarWidget.setDateTextFormat(date, fmt)
+
         today = QDate.currentDate().toString("yyyy-MM-dd")
         today_events = [ev for ev in self.events if ev["date"] == today]
         self.ui.listEventsToday.clear()
         for ev in today_events:
-            item = QListWidgetItem(f"{ev['time']} – {ev['title']}")
+            item = QListWidgetItem()
+            item.setText(f"{ev['time']} – {ev['title']}")
+            icon_path = f"assets/{ev['type']}.png"
+            pixmap = QPixmap(icon_path)
+            if not pixmap.isNull():
+                item.setIcon(QIcon(pixmap))
             item.setBackground(QColor(ev["color"]))
             item.setForeground(
                 Qt.GlobalColor.white
