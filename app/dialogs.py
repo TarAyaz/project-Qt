@@ -12,7 +12,6 @@ class TaskDialog(QDialog):
         layout.addWidget(self.ui)
         self.setLayout(layout)
         self.setWindowTitle("Новая задача")
-
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
         self.ui.dateDeadline.setDate(QDate.currentDate())
@@ -51,12 +50,10 @@ class EventDialog(QDialog):
         layout.addWidget(self.ui)
         self.setLayout(layout)
         self.setWindowTitle("Новое событие")
-
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
         self.ui.dateEvent.setDate(QDate.currentDate())
         self.ui.timeEvent.setTime(QTime.currentTime())
-
         self.selected_color = "#4A90E2"
         self.ui.btnPickColor.clicked.connect(self.pick_color)
         self.update_color_button()

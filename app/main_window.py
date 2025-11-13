@@ -87,7 +87,6 @@ class MainWindow(QMainWindow):
                 filtered_tasks.append(task)
             elif filter_mode == "Выполненные" and task["completed"]:
                 filtered_tasks.append(task)
-
         table = self.ui.tableTasks
         table.setRowCount(len(filtered_tasks))
         for i, task in enumerate(filtered_tasks):
@@ -128,7 +127,6 @@ class MainWindow(QMainWindow):
             fmt = self.ui.calendarWidget.dateTextFormat(date)
             fmt.setBackground(QColor(ev["color"]))
             self.ui.calendarWidget.setDateTextFormat(date, fmt)
-
         today = QDate.currentDate().toString("yyyy-MM-dd")
         today_events = [ev for ev in self.events if ev["date"] == today]
         self.ui.listEventsToday.clear()
@@ -209,7 +207,6 @@ class MainWindow(QMainWindow):
         )
         if not filename:
             return
-
         try:
             if data_type == "tasks":
                 with open(filename, "w", newline="", encoding="utf-8") as f:
@@ -237,7 +234,6 @@ class MainWindow(QMainWindow):
                                 task["description"],
                             ]
                         )
-
             elif data_type == "events":
                 with open(filename, "w", newline="", encoding="utf-8") as f:
                     writer = csv.writer(f)
@@ -255,7 +251,6 @@ class MainWindow(QMainWindow):
                                 ev["description"],
                             ]
                         )
-
             elif data_type == "notes":
                 with open(filename, "w", newline="", encoding="utf-8") as f:
                     writer = csv.writer(f)
@@ -264,13 +259,11 @@ class MainWindow(QMainWindow):
                         writer.writerow(
                             [note["title"], note["content"].replace("\n", "\\n")]
                         )
-
             QMessageBox.information(
                 self,
                 "Успех",
                 f"{data_type.capitalize()} успешно экспортированы в:\n{filename}",
             )
-
         except Exception as e:
             QMessageBox.critical(
                 self, "Ошибка", f"Не удалось экспортировать:\n{str(e)}"
