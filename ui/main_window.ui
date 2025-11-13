@@ -172,6 +172,8 @@
     <addaction name="actionExportEvents"/>
     <addaction name="actionExportNotes"/>
     <addaction name="actionImportTasks"/>
+    <addaction name="actionImportEvents"/>
+    <addaction name="actionImportNotes"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -202,7 +204,17 @@
     <property name="text">
         <string>Импорт задач...</string>
     </property>
-</action>
+  </action>
+  <action name="actionImportEvents">
+    <property name="text">
+        <string>Импорт событий...</string>
+    </property>
+  </action>
+  <action name="actionImportNotes">
+    <property name="text">
+        <string>Импорт заметок...</string>
+    </property>
+  </action>
   <action name="actionToggleTheme">
    <property name="text">
     <string>Сменить тему</string>

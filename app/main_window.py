@@ -23,7 +23,9 @@ class MainWindow(QMainWindow):
         self.ui.actionExportTasks.triggered.connect(lambda: self.export_data("tasks"))
         self.ui.actionExportEvents.triggered.connect(lambda: self.export_data("events"))
         self.ui.actionExportNotes.triggered.connect(lambda: self.export_data("notes"))
-        self.ui.actionImportTasks.triggered.connect(self.import_tasks)
+        self.ui.actionImportTasks.triggered.connect(lambda: self.import_data("tasks"))
+        self.ui.actionImportEvents.triggered.connect(lambda: self.import_data("events"))
+        self.ui.actionImportNotes.triggered.connect(lambda: self.import_data("notes"))
 
         self.ui.btnAddTask.clicked.connect(self.add_task)
         self.ui.tableTasks.cellClicked.connect(self.on_task_cell_clicked)
@@ -200,6 +202,7 @@ class MainWindow(QMainWindow):
         self.setPalette(palette)
         self.ui.tabWidget.setPalette(palette)
 
+    # === Экспорт файлов ===
     def export_data(self, data_type):
         filename, _ = QFileDialog.getSaveFileName(
             self, f"Экспорт {data_type}", "", "CSV Files (*.csv)"
@@ -280,50 +283,102 @@ class MainWindow(QMainWindow):
         self.db.save_notes(self.notes)
         event.accept()
 
-    def import_tasks(self):
+    # // === Импорт файлов ===
+    def import_data(self, data_type):
         filename, _ = QFileDialog.getOpenFileName(
-            self, "Импорт задач", "", "CSV Files (*.csv)"
+            self, f"Импорт {data_type}", "", "CSV Files (*.csv)"
         )
         if not filename:
             return
         try:
             with open(filename, "r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
-                imported_tasks = []
-                for row in reader:
-                    if not all(
-                        key in row
-                        for key in [
-                            "Заголовок",
-                            "Приоритет",
-                            "Дедлайн",
-                            "Категория",
-                            "Выполнено",
-                        ]
-                    ):
-                        QMessageBox.critical(self, "Ошибка", "Формат CSV некорректен.")
-                        return
+                if data_type == "tasks":
+                    imported_data = []
+                    for row in reader:
+                        if not all(
+                            key in row
+                            for key in [
+                                "Заголовок",
+                                "Приоритет",
+                                "Дедлайн",
+                                "Категория",
+                                "Выполнено",
+                            ]
+                        ):
+                            QMessageBox.critical(
+                                self, "Ошибка", "Формат CSV некорректен."
+                            )
+                            return
 
-                    priority_map = {"Низкий": 1, "Средний": 2, "Высокий": 3}
-                    priority = priority_map.get(row["Приоритет"], 2)
-                    completed = row["Выполнено"] == "Да"
+                        priority_map = {"Низкий": 1, "Средний": 2, "Высокий": 3}
+                        priority = priority_map.get(row["Приоритет"], 2)
+                        completed = row["Выполнено"] == "Да"
 
-                    imported_tasks.append(
-                        {
-                            "title": row["Заголовок"],
-                            "description": row.get("Описание", ""),
-                            "priority": priority,
-                            "due_date": row["Дедлайн"],
-                            "category": row["Категория"],
-                            "completed": completed,
-                        }
-                    )
-            self.tasks.extend(imported_tasks)
-            self.refresh_tasks_table()
+                        imported_data.append(
+                            {
+                                "title": row["Заголовок"],
+                                "description": row.get("Описание", ""),
+                                "priority": priority,
+                                "due_date": row["Дедлайн"],
+                                "category": row["Категория"],
+                                "completed": completed,
+                            }
+                        )
+                    self.tasks.extend(imported_data)
+                    self.refresh_tasks_table()
+                elif data_type == "events":
+                    imported_data = []
+                    for row in reader:
+                        if not all(
+                            key in row
+                            for key in [
+                                "Название",
+                                "Дата",
+                                "Время",
+                                "Цвет",
+                                "Повторяется",
+                            ]
+                        ):
+                            QMessageBox.critical(
+                                self, "Ошибка", "Формат CSV некорректен."
+                            )
+                            return
+                        recurring = row["Повторяется"] == "Да"
+                        imported_data.append(
+                            {
+                                "title": row["Название"],
+                                "description": row.get("Описание", ""),
+                                "date": row["Дата"],
+                                "time": row["Время"],
+                                "color": row["Цвет"],
+                                "is_recurring": recurring,
+                            }
+                        )
+                    self.events.extend(imported_data)
+                    self.refresh_events_calendar()
+                elif data_type == "notes":
+                    imported_data = []
+                    for row in reader:
+                        if not all(key in row for key in ["Заголовок", "Содержимое"]):
+                            QMessageBox.critical(
+                                self, "Ошибка", "Формат CSV некорректен."
+                            )
+                            return
+                        imported_data.append(
+                            {
+                                "title": row["Заголовок"],
+                                "content": row["Содержимое"].replace("\\n", "\n"),
+                                "created_at": row.get("Дата создания", ""),
+                                "updated_at": row.get("Дата обновления", ""),
+                            }
+                        )
+                    self.notes.extend(imported_data)
+                    self.refresh_notes_list()
             QMessageBox.information(
                 self,
                 "Успех",
-                f"Импортировано {len(imported_tasks)} задач(и) из:\n{filename}",
+                f"Импортировано {len(imported_data)} {data_type} из:\n{filename}",
             )
         except Exception as e:
             QMessageBox.critical(self, "Ошибка", f"Не удалось импортировать:\n{str(e)}")
