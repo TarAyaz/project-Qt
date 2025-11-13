@@ -171,6 +171,7 @@
     <addaction name="actionExportTasks"/>
     <addaction name="actionExportEvents"/>
     <addaction name="actionExportNotes"/>
+    <addaction name="actionImportTasks"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -197,6 +198,11 @@
     <string>Экспорт заметок...</string>
    </property>
   </action>
+  <action name="actionImportTasks">
+    <property name="text">
+        <string>Импорт задач...</string>
+    </property>
+</action>
   <action name="actionToggleTheme">
    <property name="text">
     <string>Сменить тему</string>

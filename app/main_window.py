@@ -23,6 +23,7 @@ class MainWindow(QMainWindow):
         self.ui.actionExportTasks.triggered.connect(lambda: self.export_data("tasks"))
         self.ui.actionExportEvents.triggered.connect(lambda: self.export_data("events"))
         self.ui.actionExportNotes.triggered.connect(lambda: self.export_data("notes"))
+        self.ui.actionImportTasks.triggered.connect(self.import_tasks)
 
         self.ui.btnAddTask.clicked.connect(self.add_task)
         self.ui.tableTasks.cellClicked.connect(self.on_task_cell_clicked)
@@ -278,3 +279,51 @@ class MainWindow(QMainWindow):
         self.db.save_events(self.events)
         self.db.save_notes(self.notes)
         event.accept()
+
+    def import_tasks(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "Импорт задач", "", "CSV Files (*.csv)"
+        )
+        if not filename:
+            return
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                imported_tasks = []
+                for row in reader:
+                    if not all(
+                        key in row
+                        for key in [
+                            "Заголовок",
+                            "Приоритет",
+                            "Дедлайн",
+                            "Категория",
+                            "Выполнено",
+                        ]
+                    ):
+                        QMessageBox.critical(self, "Ошибка", "Формат CSV некорректен.")
+                        return
+
+                    priority_map = {"Низкий": 1, "Средний": 2, "Высокий": 3}
+                    priority = priority_map.get(row["Приоритет"], 2)
+                    completed = row["Выполнено"] == "Да"
+
+                    imported_tasks.append(
+                        {
+                            "title": row["Заголовок"],
+                            "description": row.get("Описание", ""),
+                            "priority": priority,
+                            "due_date": row["Дедлайн"],
+                            "category": row["Категория"],
+                            "completed": completed,
+                        }
+                    )
+            self.tasks.extend(imported_tasks)
+            self.refresh_tasks_table()
+            QMessageBox.information(
+                self,
+                "Успех",
+                f"Импортировано {len(imported_tasks)} задач(и) из:\n{filename}",
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Ошибка", f"Не удалось импортировать:\n{str(e)}")
