@@ -1,2 +1,4 @@
 __pycache__/
 database/project.db
+build
+dist
